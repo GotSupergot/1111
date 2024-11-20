@@ -1,0 +1,121 @@
+// ==UserScript==
+// @name         BOT JOIN PASS
+// @namespace    http://tampermonkey.net/
+// @version      2024-11-20
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.wolvesville.com/
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Add a button to the webpage
+// Add buttons to the webpage
+function createTriggerButtons() {
+    // Create the first button
+    const button1 = document.createElement("button");
+    button1.innerText = "Run Script - sVILL WIN E";
+    button1.style.position = "fixed";
+    button1.style.bottom = "60px";
+    button1.style.right = "20px";
+    button1.style.padding = "10px 20px";
+    button1.style.backgroundColor = "#007bff";
+    button1.style.color = "#fff";
+    button1.style.border = "none";
+    button1.style.borderRadius = "5px";
+    button1.style.cursor = "pointer";
+    button1.style.zIndex = 1000;
+
+    button1.addEventListener("click", () => {
+        // Run the script with "sVILL WIN E"
+        clickButtonByText("PLAY", 500)
+            .then(() => clickButtonByText("CUSTOM GAMES", 2000))
+            .then(() => clickButtonByText("Join new", 2000))
+            .then(() => clickButtonByText("sVILL WIN E ", 2000)) // Original Option
+            .then(() => clickButtonByText("Join", 2000))
+            .then(() => typeInPasswordInput('input[placeholder="Password"]', "11", 2000)) // Change Password
+            .then(() => clickButtonByText("OK", 2000))
+            .catch((error) => console.error("An error occurred:", error));
+    });
+
+    document.body.appendChild(button1);
+
+    // Create the second button
+    const button2 = document.createElement("button");
+    button2.innerText = "Run Script - sVILL WIN A";
+    button2.style.position = "fixed";
+    button2.style.bottom = "20px";
+    button2.style.right = "20px";
+    button2.style.padding = "10px 20px";
+    button2.style.backgroundColor = "#28a745";
+    button2.style.color = "#fff";
+    button2.style.border = "none";
+    button2.style.borderRadius = "5px";
+    button2.style.cursor = "pointer";
+    button2.style.zIndex = 1000;
+
+    button2.addEventListener("click", () => {
+        // Run the script with "sVILL WIN A"
+        clickButtonByText("PLAY", 500)
+            .then(() => clickButtonByText("CUSTOM GAMES", 2000))
+            .then(() => clickButtonByText("Join new", 2000))
+            .then(() => clickButtonByText("sVILL WIN A ", 2000)) // New Option
+            .then(() => clickButtonByText("Join", 2000))
+            .then(() => typeInPasswordInput('input[placeholder="Password"]', "11", 2000)) // Change Password
+            .then(() => clickButtonByText("OK", 2000))
+            .catch((error) => console.error("An error occurred:", error));
+    });
+
+    document.body.appendChild(button2);
+}
+
+// Your existing functions
+function typeInPasswordInput(selector, value, delay) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const input = document.querySelector(selector);
+            if (input) {
+                // Set the value programmatically
+                const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                    window.HTMLInputElement.prototype,
+                    "value"
+                ).set;
+                nativeInputValueSetter.call(input, value);
+
+                // Simulate input events
+                const events = ['input', 'change', 'blur'];
+                events.forEach((eventName) => {
+                    const event = new Event(eventName, { bubbles: true, cancelable: true });
+                    input.dispatchEvent(event);
+                });
+            }
+            resolve();
+        }, delay);
+    });
+}
+
+function clickButtonByText(text, delay) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const button = document.evaluate(
+                `//div[text()="${text}"]`,
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null
+            ).singleNodeValue;
+            if (button) {
+                button.click();
+            }
+            resolve();
+        }, delay);
+    });
+}
+
+// Call to create the trigger buttons
+createTriggerButtons();
+
+})();
